@@ -1,0 +1,162 @@
+<UserControl x:Class="Pi1.HyperVToolkit.Views.NodesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:Pi1.HyperVToolkit.Controls"
+             xmlns:loc="clr-namespace:Pi1.HyperVToolkit.Localization">
+    <DockPanel Margin="12">
+        <StackPanel DockPanel.Dock="Top">
+            <controls:LoadingIndicator LoadingText="{loc:Loc Key=Load_Nodes}"
+                                       Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}" />
+            <ItemsControl ItemsSource="{Binding NodeWarnings}"
+                          Visibility="{Binding HasWarnings, Converter={StaticResource BoolToVisibilityConverter}}"
+                          Margin="0,6,0,0">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <controls:WarningBanner BannerText="{Binding}" Margin="0,0,0,6" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <TextBlock Text="{Binding StatusText}" Foreground="#616161" Margin="0,4,0,6" />
+        </StackPanel>
+
+        <TabControl SelectedIndex="{Binding SelectedTabIndex}">
+            <TabItem Header="{loc:Loc Key=Tab_HW}">
+                <Grid Margin="6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <DataGrid Grid.Column="0" ItemsSource="{Binding HardwareRows}"
+                              SelectedItem="{Binding SelectedNode}"
+                              AutoGenerateColumns="False" Margin="0,0,6,0">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Node}" Binding="{Binding Node}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Manufacturer}" Binding="{Binding Manufacturer}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Model}" Binding="{Binding Model}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_OS}" Binding="{Binding OS}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Build}" Binding="{Binding Version}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Uptime}" Binding="{Binding UptimeText}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_LogicalCPUs}" Binding="{Binding LogicalCPU}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Cores}" Binding="{Binding Cores}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Memory}" Binding="{Binding TotalBytes, Converter={StaticResource DataSizeConverter}}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_FreeMemory}" Binding="{Binding FreeBytes, Converter={StaticResource DataSizeConverter}}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_MemoryUsage}" Binding="{Binding RAMUsedPct, StringFormat='{}{0} %'}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <GroupBox Grid.Column="1" Header="{loc:Loc Key=D_NodeDetail}">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel Margin="8" DataContext="{Binding SelectedNode}">
+                                <TextBlock Text="{Binding DataContext.SelectedNodeTitle, RelativeSource={RelativeSource AncestorType=GroupBox}}" FontWeight="SemiBold" FontSize="14" />
+                                <TextBlock Margin="0,6,0,0"><Run Text="{loc:Loc Key=H_Manufacturer}" /><Run Text=": " /><Run Text="{Binding Mode=OneWay, Path=Manufacturer}" /></TextBlock>
+                                <TextBlock><Run Text="{loc:Loc Key=H_Model}" /><Run Text=": " /><Run Text="{Binding Mode=OneWay, Path=Model}" /></TextBlock>
+                                <TextBlock TextWrapping="Wrap"><Run Text="{loc:Loc Key=H_OS}" /><Run Text=": " /><Run Text="{Binding Mode=OneWay, Path=OS}" /></TextBlock>
+                                <TextBlock><Run Text="{loc:Loc Key=H_Build}" /><Run Text=": " /><Run Text="{Binding Mode=OneWay, Path=Version}" /></TextBlock>
+                                <TextBlock><Run Text="{loc:Loc Key=H_Uptime}" /><Run Text=": " /><Run Text="{Binding Mode=OneWay, Path=UptimeText}" /></TextBlock>
+                                <TextBlock FontWeight="SemiBold" Margin="0,8,0,0"><Run Text="{loc:Loc Key=H_CPUName}" /><Run Text=":" /></TextBlock>
+                                <TextBlock Text="{Binding CPUName}" TextWrapping="Wrap" />
+                                <TextBlock><Run Text="{loc:Loc Key=H_Sockets}" /><Run Text=": " /><Run Text="{Binding Mode=OneWay, Path=Sockets}" /></TextBlock>
+                                <TextBlock><Run Text="{loc:Loc Key=H_Cores}" /><Run Text=": " /><Run Text="{Binding Mode=OneWay, Path=Cores}" /></TextBlock>
+                                <TextBlock><Run Text="{loc:Loc Key=H_LogicalCPUs}" /><Run Text=": " /><Run Text="{Binding Mode=OneWay, Path=LogicalCPU}" /></TextBlock>
+                                <TextBlock FontWeight="SemiBold" Margin="0,8,0,0"><Run Text="{loc:Loc Key=H_Memory}" /><Run Text=":" /></TextBlock>
+                                <TextBlock><Run Text="{loc:Loc Key=H_Memory}" /><Run Text=": " /><Run Text="{Binding Mode=OneWay, Path=TotalBytes, Converter={StaticResource DataSizeConverter}}" /></TextBlock>
+                                <TextBlock><Run Text="{loc:Loc Key=H_FreeMemory}" /><Run Text=": " /><Run Text="{Binding Mode=OneWay, Path=FreeBytes, Converter={StaticResource DataSizeConverter}}" /></TextBlock>
+                                <TextBlock><Run Text="{loc:Loc Key=H_MemoryUsage}" /><Run Text=": " /><Run Text="{Binding Mode=OneWay, Path=RAMUsedPct, StringFormat='{}{0} %'}" /></TextBlock>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc Key=Tab_Capacity}">
+                <DataGrid ItemsSource="{Binding CapacityRows}" AutoGenerateColumns="False" Margin="6">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Node}" Binding="{Binding Node}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_RunningVMs}" Binding="{Binding RunningVM}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_OffVMs}" Binding="{Binding OffVM}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_vCPU}" Binding="{Binding VCpu}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_LogicalCPUs}" Binding="{Binding LogicalCPU}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Memory}" Binding="{Binding TotalBytes, Converter={StaticResource DataSizeConverter}}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_FreeMemory}" Binding="{Binding FreeBytes, Converter={StaticResource DataSizeConverter}}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_MemoryUsage}" Binding="{Binding RAMUsedPct, StringFormat='{}{0} %'}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_AssignedMemory}" Binding="{Binding AssignedBytes, Converter={StaticResource DataSizeConverter}}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_DemandMemory}" Binding="{Binding DemandBytes, Converter={StaticResource DataSizeConverter}}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_MemoryDifference}" Binding="{Binding WasteBytes, Converter={StaticResource DataSizeConverter}}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_AssignedPct}" Binding="{Binding AssignedPct, StringFormat='{}{0} %'}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_DemandPct}" Binding="{Binding DemandPct, StringFormat='{}{0} %'}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc Key=Tab_Volumes}">
+                <DataGrid ItemsSource="{Binding VolumeRows}" AutoGenerateColumns="False" Margin="6">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Node}" Binding="{Binding Node}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Drive}" Binding="{Binding Drive}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Label}" Binding="{Binding Label}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_FileSystem}" Binding="{Binding FileSystem}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Size}" Binding="{Binding SizeBytes, Converter={StaticResource DataSizeConverter}}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_FreeSpace}" Binding="{Binding FreeBytes, Converter={StaticResource DataSizeConverter}}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_FreeSpacePct}" Binding="{Binding FreePercent, StringFormat='{}{0} %'}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc Key=Tab_Network}">
+                <DataGrid ItemsSource="{Binding AdapterRows}" AutoGenerateColumns="False" Margin="6">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Node}" Binding="{Binding Node}" />
+                        <DataGridTextColumn Width="*" Header="{loc:Loc Key=H_Adapter}" Binding="{Binding Description}" ElementStyle="{StaticResource LeftAlignedText}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_IPv4}" Binding="{Binding IPv4}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_MAC}" Binding="{Binding MAC}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Gateway}" Binding="{Binding Gateway}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_DNS}" Binding="{Binding DNS}" />
+                        <DataGridCheckBoxColumn Width="Auto" Header="{loc:Loc Key=H_DHCP}" Binding="{Binding DHCP}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc Key=Tab_Host}">
+                <Grid Margin="6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <DataGrid Grid.Column="0" ItemsSource="{Binding HostSettingsRows}"
+                              SelectedItem="{Binding SelectedHostSettings}"
+                              AutoGenerateColumns="False" Margin="0,0,6,0">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Node}" Binding="{Binding Node}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_LogicalCPUs}" Binding="{Binding LogicalProcessorCount}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Memory}" Binding="{Binding MemoryCapacityBytes, Converter={StaticResource DataSizeConverter}}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_FreeMemory}" Binding="{Binding FreeBytes, Converter={StaticResource DataSizeConverter}}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_MemoryUsage}" Binding="{Binding RAMUsedPct, StringFormat='{}{0} %'}" />
+                            <DataGridCheckBoxColumn Width="Auto" Header="{loc:Loc Key=H_NumaSpanning}" Binding="{Binding NumaSpanningEnabled}" />
+                            <DataGridCheckBoxColumn Width="Auto" Header="{loc:Loc Key=H_LiveMigration}" Binding="{Binding MigrationEnabled}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_MaxMigrations}" Binding="{Binding MaxMigrations}" />
+                            <DataGridCheckBoxColumn Width="Auto" Header="{loc:Loc Key=H_EnhancedSession}" Binding="{Binding EnhancedSessionMode}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <GroupBox Grid.Column="1" Header="{loc:Loc Key=D_HostDetail}">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel Margin="8" DataContext="{Binding SelectedHostSettings}">
+                                <TextBlock Text="{Binding DataContext.SelectedHostTitle, RelativeSource={RelativeSource AncestorType=GroupBox}}" FontWeight="SemiBold" FontSize="14" />
+                                <TextBlock Margin="0,6,0,0"><Run Text="{loc:Loc Key=H_LogicalCPUs}" /><Run Text=": " /><Run Text="{Binding Mode=OneWay, Path=LogicalProcessorCount}" /></TextBlock>
+                                <TextBlock><Run Text="{loc:Loc Key=H_Memory}" /><Run Text=": " /><Run Text="{Binding Mode=OneWay, Path=MemoryCapacityBytes, Converter={StaticResource DataSizeConverter}}" /></TextBlock>
+                                <TextBlock><Run Text="{loc:Loc Key=H_FreeMemory}" /><Run Text=": " /><Run Text="{Binding Mode=OneWay, Path=FreeBytes, Converter={StaticResource DataSizeConverter}}" /></TextBlock>
+                                <TextBlock><Run Text="{loc:Loc Key=H_MemoryUsage}" /><Run Text=": " /><Run Text="{Binding Mode=OneWay, Path=RAMUsedPct, StringFormat='{}{0} %'}" /></TextBlock>
+                                <TextBlock><Run Text="{loc:Loc Key=H_NumaSpanning}" /><Run Text=": " /><Run Text="{Binding Mode=OneWay, Path=NumaSpanningEnabled, Converter={StaticResource BoolYesNoConverter}}" /></TextBlock>
+                                <TextBlock><Run Text="{loc:Loc Key=H_LiveMigration}" /><Run Text=": " /><Run Text="{Binding Mode=OneWay, Path=MigrationEnabled, Converter={StaticResource BoolYesNoConverter}}" /></TextBlock>
+                                <TextBlock><Run Text="{loc:Loc Key=H_MaxMigrations}" /><Run Text=": " /><Run Text="{Binding Mode=OneWay, Path=MaxMigrations}" /></TextBlock>
+                                <TextBlock><Run Text="{loc:Loc Key=H_EnhancedSession}" /><Run Text=": " /><Run Text="{Binding Mode=OneWay, Path=EnhancedSessionMode, Converter={StaticResource BoolYesNoConverter}}" /></TextBlock>
+                                <TextBlock Text="{loc:Loc Key=D_VMPathTitle}" FontWeight="SemiBold" Margin="0,8,0,0" />
+                                <TextBox Text="{Binding VirtualMachinePath, Mode=OneWay}" IsReadOnly="True" BorderThickness="0" Background="Transparent" TextWrapping="Wrap" />
+                                <TextBlock Text="{loc:Loc Key=D_VHDPathTitle}" FontWeight="SemiBold" Margin="0,8,0,0" />
+                                <TextBox Text="{Binding VirtualHardDiskPath, Mode=OneWay}" IsReadOnly="True" BorderThickness="0" Background="Transparent" TextWrapping="Wrap" />
+                            </StackPanel>
+                        </ScrollViewer>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</UserControl>

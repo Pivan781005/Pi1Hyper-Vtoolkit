@@ -1,0 +1,62 @@
+﻿<Application x:Class="Pi1.HyperVToolkit.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:Pi1.HyperVToolkit.Converters"
+             xmlns:vm="clr-namespace:Pi1.HyperVToolkit.ViewModels"
+             xmlns:views="clr-namespace:Pi1.HyperVToolkit.Views">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles/DataGridStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converters:SeverityToBrushConverter x:Key="SeverityToBrushConverter" />
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+            <converters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter" />
+            <converters:EnumMatchConverter x:Key="EnumMatchConverter" />
+            <converters:StatusValueConverter x:Key="StatusValueConverter" />
+            <converters:BoolYesNoConverter x:Key="BoolYesNoConverter" />
+            <converters:DataSizeConverter x:Key="DataSizeConverter" />
+            <converters:LocalizedDateConverter x:Key="LocalizedDateConverter" />
+            <converters:VmSummaryValueConverter x:Key="VmSummaryValueConverter" />
+            <converters:PlacementAdviceConverter x:Key="PlacementAdviceConverter" />
+            <converters:FailoverAdviceConverter x:Key="FailoverAdviceConverter" />
+            <converters:HealthScoreToBrushConverter x:Key="HealthScoreToBrushConverter" />
+            <converters:AdvisorRecommendationConverter x:Key="AdvisorRecommendationConverter" />
+
+            <!-- View-model to view mapping for shell navigation. -->
+            <DataTemplate DataType="{x:Type vm:SectionPlaceholderViewModel}">
+                <views:SectionPlaceholderView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:VmsViewModel}">
+                <views:VmsView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:NodesViewModel}">
+                <views:NodesView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:DashboardViewModel}">
+                <views:DashboardView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:StorageViewModel}">
+                <views:StorageView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:NetworkingViewModel}">
+                <views:NetworkingView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:ClusterViewModel}">
+                <views:ClusterView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:DiagnosticsViewModel}">
+                <views:DiagnosticsView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:ExportViewModel}">
+                <views:ExportView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
+                <views:SettingsView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:HelpViewModel}">
+                <views:HelpView />
+            </DataTemplate>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

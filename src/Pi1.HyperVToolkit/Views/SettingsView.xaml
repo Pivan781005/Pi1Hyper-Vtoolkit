@@ -1,0 +1,53 @@
+<UserControl x:Class="Pi1.HyperVToolkit.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="clr-namespace:Pi1.HyperVToolkit.Localization">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24" MaxWidth="640" HorizontalAlignment="Left">
+            <TextBlock Text="{loc:Loc Key=Nav_Settings}" FontSize="22" FontWeight="SemiBold" />
+
+            <GroupBox Header="{loc:Loc Key=Set_Scope}" Margin="0,16,0,0" Padding="12">
+                <StackPanel>
+                    <RadioButton Content="{loc:Loc Key=Set_LocalNode}"
+                                 IsChecked="{Binding ScopeMode, Converter={StaticResource EnumMatchConverter}, ConverterParameter=Local}"
+                                 Margin="0,0,0,6" />
+                    <RadioButton Content="{loc:Loc Key=Set_ClusterNodes}"
+                                 IsChecked="{Binding ScopeMode, Converter={StaticResource EnumMatchConverter}, ConverterParameter=Cluster}"
+                                 Margin="0,0,0,6" />
+                    <RadioButton Content="{loc:Loc Key=Set_SelectedNode}"
+                                 IsChecked="{Binding ScopeMode, Converter={StaticResource EnumMatchConverter}, ConverterParameter=Node}"
+                                 Margin="0,0,0,6" />
+                    <DockPanel Margin="0,6,0,0">
+                        <TextBlock Text="{loc:Loc Key=Set_Node}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                        <ComboBox ItemsSource="{Binding NodeOptions}"
+                                  Text="{Binding NodeName, UpdateSourceTrigger=PropertyChanged}"
+                                  IsEditable="True" MinWidth="220" />
+                    </DockPanel>
+                    <TextBlock Text="{loc:Loc Key=Set_Hint}"
+                               Foreground="#616161" TextWrapping="Wrap" Margin="0,8,0,0" />
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="{loc:Loc Key=Set_Display}" Margin="0,12,0,0" Padding="12">
+                <StackPanel>
+                    <DockPanel Margin="0,0,0,8">
+                        <TextBlock Text="{loc:Loc Key=Set_Language}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                        <ComboBox ItemsSource="{Binding LanguageOptions}"
+                                  DisplayMemberPath="DisplayName"
+                                  SelectedValuePath="Code"
+                                  SelectedValue="{Binding Language}"
+                                  MinWidth="180" />
+                    </DockPanel>
+                    <CheckBox Content="{loc:Loc Key=Set_ShowLegend}" IsChecked="{Binding ShowLegend}" />
+                </StackPanel>
+            </GroupBox>
+
+            <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
+                <Button Content="{loc:Loc Key=Set_Save}" Command="{Binding SaveCommand}" MinWidth="110" Padding="12,4" />
+                <TextBlock Text="{Binding SaveMessage}" VerticalAlignment="Center" Margin="12,0,0,0" Foreground="#2E7D32" TextWrapping="Wrap" />
+            </StackPanel>
+
+            <TextBlock Text="{Binding StatusText}" Foreground="#616161" Margin="0,12,0,0" TextWrapping="Wrap" />
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

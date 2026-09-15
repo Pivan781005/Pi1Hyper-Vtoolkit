@@ -1,0 +1,20 @@
+<UserControl x:Class="Pi1.HyperVToolkit.Views.SectionPlaceholderView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:Pi1.HyperVToolkit.Controls"
+             xmlns:core="clr-namespace:Pi1.HyperVToolkit.Core.Models;assembly=Pi1.HyperVToolkit.Core"
+             xmlns:loc="clr-namespace:Pi1.HyperVToolkit.Localization">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24" MaxWidth="760" HorizontalAlignment="Left">
+            <TextBlock Text="{Binding Title}" FontSize="22" FontWeight="SemiBold" />
+            <controls:WarningBanner Severity="{x:Static core:Severity.Info}"
+                                    BannerText="{loc:Loc Key=Ph_Planned}"
+                                    Detail="{Binding MigrationNote}"
+                                    Margin="0,12,0,0" />
+            <controls:LoadingIndicator LoadingText="{loc:Loc Key=Load_Generic}"
+                                       Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}"
+                                       Margin="0,12,0,0" />
+            <TextBlock Text="{Binding StatusText}" Foreground="#616161" Margin="0,12,0,0" TextWrapping="Wrap" />
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

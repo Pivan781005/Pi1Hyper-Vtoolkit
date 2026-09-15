@@ -1,0 +1,40 @@
+<UserControl x:Class="Pi1.HyperVToolkit.Views.HelpView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="clr-namespace:Pi1.HyperVToolkit.Localization">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24" MaxWidth="720" HorizontalAlignment="Left">
+            <TextBlock Text="{loc:Loc Key=Help_Title}" FontSize="22" FontWeight="SemiBold" />
+
+            <TextBlock Text="{loc:Loc Key=Help_Purpose_H}" FontSize="15" FontWeight="SemiBold" Margin="0,16,0,4" />
+            <TextBlock Text="{Binding Purpose}" TextWrapping="Wrap" />
+
+            <TextBlock Text="{loc:Loc Key=Help_ReadOnly_H}" FontSize="15" FontWeight="SemiBold" Margin="0,16,0,4" />
+            <TextBlock Text="{Binding ReadOnly}" TextWrapping="Wrap" />
+
+            <TextBlock Text="{loc:Loc Key=Help_Admin_H}" FontSize="15" FontWeight="SemiBold" Margin="0,16,0,4" />
+            <TextBlock Text="{Binding Admin}" TextWrapping="Wrap" />
+
+            <TextBlock Text="{loc:Loc Key=Help_Scope_H}" FontSize="15" FontWeight="SemiBold" Margin="0,16,0,4" />
+            <TextBlock Text="{Binding Scope}" TextWrapping="Wrap" />
+
+            <TextBlock Text="{loc:Loc Key=Help_Loading_H}" FontSize="15" FontWeight="SemiBold" Margin="0,16,0,4" />
+            <TextBlock Text="{Binding Loading}" TextWrapping="Wrap" />
+
+            <TextBlock Text="{loc:Loc Key=Help_Cache_H}" FontSize="15" FontWeight="SemiBold" Margin="0,16,0,4" />
+            <TextBlock Text="{Binding Cache}" TextWrapping="Wrap" />
+
+            <TextBlock Text="{loc:Loc Key=Help_Areas_H}" FontSize="15" FontWeight="SemiBold" Margin="0,16,0,4" />
+            <TextBlock Text="{Binding Areas}" TextWrapping="Wrap" />
+
+            <TextBlock Text="{loc:Loc Key=Help_Planned_H}" FontSize="15" FontWeight="SemiBold" Margin="0,16,0,4" />
+            <TextBlock Text="{Binding Planned}" TextWrapping="Wrap" />
+
+            <TextBlock Text="{loc:Loc Key=Help_Units_H}" FontSize="15" FontWeight="SemiBold" Margin="0,16,0,4" />
+            <TextBlock Text="{Binding Units}" TextWrapping="Wrap" />
+
+            <TextBlock Text="{loc:Loc Key=Help_Paths_H}" FontSize="15" FontWeight="SemiBold" Margin="0,16,0,4" />
+            <TextBlock Text="{Binding Paths}" TextWrapping="Wrap" />
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

@@ -1,0 +1,87 @@
+<UserControl x:Class="Pi1.HyperVToolkit.Views.DiagnosticsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:Pi1.HyperVToolkit.Controls"
+             xmlns:loc="clr-namespace:Pi1.HyperVToolkit.Localization">
+    <DockPanel Margin="12">
+        <StackPanel DockPanel.Dock="Top">
+            <controls:LoadingIndicator LoadingText="{loc:Loc Key=Load_Diagnostics}"
+                                       Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}" />
+            <ItemsControl ItemsSource="{Binding NodeWarnings}"
+                          Visibility="{Binding HasWarnings, Converter={StaticResource BoolToVisibilityConverter}}"
+                          Margin="0,6,0,0">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <controls:WarningBanner BannerText="{Binding}" Margin="0,0,0,6" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <controls:WarningBanner BannerText="{loc:Loc Key=Cluster_Unavailable}"
+                                    Margin="0,6,0,0"
+                                    Visibility="{Binding IsClusterAvailable, Converter={StaticResource InverseBoolToVisibilityConverter}}" />
+            <TextBlock Text="{Binding StatusText}" Foreground="#616161" Margin="0,4,0,6" />
+        </StackPanel>
+
+        <TabControl SelectedIndex="{Binding SelectedTabIndex}">
+            <TabItem Header="{loc:Loc Key=Tab_Advisor}">
+                <DockPanel Margin="6">
+                    <TextBlock DockPanel.Dock="Top" Margin="0,0,0,6" Foreground="#616161"
+                               Text="{loc:Loc Key=Empty_Advisor}" TextWrapping="Wrap" />
+                    <DataGrid ItemsSource="{Binding AdvisorRows}" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Severity}" Binding="{Binding Severity, Converter={StaticResource StatusValueConverter}}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_HostNode}" Binding="{Binding HostNode}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_VM}" Binding="{Binding VM}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_AssignedMemory}" Binding="{Binding AssignedGB}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_DemandMemory}" Binding="{Binding DemandGB}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_MemoryDifference}" Binding="{Binding WasteGB}" />
+                            <DataGridTextColumn Width="*" Header="{loc:Loc Key=H_Recommendation}" ElementStyle="{StaticResource LeftAlignedText}">
+                                <DataGridTextColumn.Binding>
+                                    <MultiBinding Converter="{StaticResource AdvisorRecommendationConverter}">
+                                        <Binding Path="Rule" />
+                                        <Binding Path="IsSensitive" />
+                                    </MultiBinding>
+                                </DataGridTextColumn.Binding>
+                            </DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc Key=Tab_CsvLowFree}">
+                <DockPanel Margin="6">
+                    <TextBlock DockPanel.Dock="Top" Margin="0,0,0,6" Foreground="#616161"
+                               Text="{loc:Loc Key=Empty_CsvLowFree}" TextWrapping="Wrap" />
+                    <DataGrid ItemsSource="{Binding CsvLowFreeRows}" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Name}" Binding="{Binding Name}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_State}" Binding="{Binding State, Converter={StaticResource StatusValueConverter}}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_OwnerNode}" Binding="{Binding OwnerNode}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Size}" Binding="{Binding SizeBytes, Converter={StaticResource DataSizeConverter}}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_FreeSpace}" Binding="{Binding FreeBytes, Converter={StaticResource DataSizeConverter}}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_UsedSpace}" Binding="{Binding UsedBytes, Converter={StaticResource DataSizeConverter}}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_FreeSpacePct}" Binding="{Binding FreePercent, StringFormat='{}{0} %'}" />
+                            <DataGridTextColumn Width="*" Header="{loc:Loc Key=H_Path}" Binding="{Binding Path}" ElementStyle="{StaticResource LeftAlignedText}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc Key=Tab_ResourcesNotOnline}">
+                <DockPanel Margin="6">
+                    <TextBlock DockPanel.Dock="Top" Margin="0,0,0,6" Foreground="#616161"
+                               Text="{loc:Loc Key=Empty_ResourcesNotOnline}" TextWrapping="Wrap" />
+                    <DataGrid ItemsSource="{Binding ResourceRows}" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Name}" Binding="{Binding Name}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_State}" Binding="{Binding State, Converter={StaticResource StatusValueConverter}}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_OwnerGroup}" Binding="{Binding OwnerGroup}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_ResourceType}" Binding="{Binding ResourceType}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_OwnerNode}" Binding="{Binding OwnerNode}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</UserControl>

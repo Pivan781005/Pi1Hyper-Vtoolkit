@@ -1,0 +1,49 @@
+# Build output
+**/bin/
+**/obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# JetBrains / IDE
+.idea/
+*.DotSettings.user
+
+# Tests / coverage
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+coverage/
+coverage.cobertura.xml
+
+# NuGet / packages
+packages/
+*.nupkg
+*.snupkg
+
+# Publish / release output (Release Candidate ZIPs are uploaded as
+# GitHub Release assets instead of being committed to git)
+publish/
+artifacts/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.old
+*.log
+*.cache
+
+# OS files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# OpenCode / AI working-session exports
+.opencode/
+*.opencode.json

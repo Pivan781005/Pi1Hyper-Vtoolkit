@@ -1,0 +1,71 @@
+<UserControl x:Class="Pi1.HyperVToolkit.Views.NetworkingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:Pi1.HyperVToolkit.Controls"
+             xmlns:loc="clr-namespace:Pi1.HyperVToolkit.Localization">
+    <DockPanel Margin="12">
+        <StackPanel DockPanel.Dock="Top">
+            <controls:LoadingIndicator LoadingText="{loc:Loc Key=Load_Network}"
+                                       Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}" />
+            <ItemsControl ItemsSource="{Binding NodeWarnings}"
+                          Visibility="{Binding HasWarnings, Converter={StaticResource BoolToVisibilityConverter}}"
+                          Margin="0,6,0,0">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <controls:WarningBanner BannerText="{Binding}" Margin="0,0,0,6" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <TextBlock Text="{Binding StatusText}" Foreground="#616161" Margin="0,4,0,6" />
+        </StackPanel>
+
+        <TabControl SelectedIndex="{Binding SelectedTabIndex}">
+            <TabItem Header="{loc:Loc Key=Tab_Switches}">
+                <DataGrid ItemsSource="{Binding SwitchRows}" AutoGenerateColumns="False" Margin="6">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_HostNode}" Binding="{Binding HostNode}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Name}" Binding="{Binding Name}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_SwitchType}" Binding="{Binding SwitchType, Converter={StaticResource StatusValueConverter}}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_AllowMgmtOS}" Binding="{Binding AllowManagementOS, Converter={StaticResource BoolYesNoConverter}}" />
+                        <DataGridTextColumn Width="*" Header="{loc:Loc Key=H_NetworkAdapter}" Binding="{Binding NetAdapterInterfaceDescription}" ElementStyle="{StaticResource LeftAlignedText}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc Key=Tab_Adapters}">
+                <DockPanel Margin="6">
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,6">
+                        <TextBlock Text="{loc:Loc Key=F_IP}" VerticalAlignment="Center" />
+                        <TextBox Text="{Binding IpFilter, UpdateSourceTrigger=PropertyChanged}" MinWidth="170" Margin="6,0,0,0" />
+                        <TextBlock Text="{loc:Loc Key=F_MAC}" VerticalAlignment="Center" Margin="14,0,0,0" />
+                        <TextBox Text="{Binding MacFilter, UpdateSourceTrigger=PropertyChanged}" MinWidth="170" Margin="6,0,0,0" />
+                    </StackPanel>
+                    <DataGrid ItemsSource="{Binding AdapterRows}" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_HostNode}" Binding="{Binding HostNode}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_VMName}" Binding="{Binding VMName}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_IPv4}" Binding="{Binding IPv4}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_MacAddress}" Binding="{Binding MacAddress}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_SwitchName}" Binding="{Binding SwitchName}" />
+                            <DataGridTextColumn Width="*" Header="{loc:Loc Key=H_AllIPs}" Binding="{Binding AllIPs}" ElementStyle="{StaticResource LeftAlignedText}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc Key=Tab_VLAN}">
+                <DataGrid ItemsSource="{Binding VlanRows}" AutoGenerateColumns="False" Margin="6">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_HostNode}" Binding="{Binding HostNode}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_VMName}" Binding="{Binding VMName}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_AdapterName}" Binding="{Binding VMNetworkAdapterName}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_OperationMode}" Binding="{Binding OperationMode, Converter={StaticResource StatusValueConverter}}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_AccessVlan}" Binding="{Binding AccessVlanId}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_NativeVlan}" Binding="{Binding NativeVlanId}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_AllowedVlans}" Binding="{Binding AllowedVlanIdList}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</UserControl>

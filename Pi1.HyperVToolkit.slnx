@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Pi1.HyperVToolkit.Core/Pi1.HyperVToolkit.Core.csproj" />
+    <Project Path="src/Pi1.HyperVToolkit.Infrastructure/Pi1.HyperVToolkit.Infrastructure.csproj" />
+    <Project Path="src/Pi1.HyperVToolkit/Pi1.HyperVToolkit.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Pi1.HyperVToolkit.Tests/Pi1.HyperVToolkit.Tests.csproj" />
+  </Folder>
+</Solution>

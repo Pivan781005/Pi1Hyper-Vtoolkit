@@ -1,0 +1,27 @@
+<UserControl x:Class="Pi1.HyperVToolkit.Controls.WarningBanner"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Border BorderThickness="1"
+            CornerRadius="4"
+            Padding="10,8"
+            BorderBrush="{Binding Severity, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource SeverityToBrushConverter}}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="6" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0"
+                    CornerRadius="3"
+                    Background="{Binding Severity, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource SeverityToBrushConverter}}" />
+            <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                <TextBlock Text="{Binding BannerText, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                           FontWeight="SemiBold"
+                           TextWrapping="Wrap" />
+                <TextBlock Text="{Binding Detail, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                           Foreground="#555555"
+                           TextWrapping="Wrap"
+                           Margin="0,2,0,0" />
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

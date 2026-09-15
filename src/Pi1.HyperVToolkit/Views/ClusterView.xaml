@@ -1,0 +1,256 @@
+<UserControl x:Class="Pi1.HyperVToolkit.Views.ClusterView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:Pi1.HyperVToolkit.Controls"
+             xmlns:loc="clr-namespace:Pi1.HyperVToolkit.Localization">
+    <DockPanel Margin="12">
+        <StackPanel DockPanel.Dock="Top">
+            <controls:LoadingIndicator LoadingText="{loc:Loc Key=Load_Cluster}"
+                                       Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}" />
+            <ItemsControl ItemsSource="{Binding NodeWarnings}"
+                          Visibility="{Binding HasWarnings, Converter={StaticResource BoolToVisibilityConverter}}"
+                          Margin="0,6,0,0">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <controls:WarningBanner BannerText="{Binding}" Margin="0,0,0,6" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <controls:WarningBanner BannerText="{loc:Loc Key=Cluster_Unavailable}"
+                                        Margin="0,6,0,0"
+                                        Visibility="{Binding IsAvailable, Converter={StaticResource InverseBoolToVisibilityConverter}}" />
+            <TextBlock Text="{Binding StatusText}" Foreground="#616161" Margin="0,4,0,6" />
+        </StackPanel>
+
+        <TabControl SelectedIndex="{Binding SelectedTabIndex}">
+            <TabItem Header="{loc:Loc Key=Tab_Nodes}">
+                <DataGrid ItemsSource="{Binding NodeRows}" AutoGenerateColumns="False" Margin="6">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Node}" Binding="{Binding Name}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_State}" Binding="{Binding State, Converter={StaticResource StatusValueConverter}}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_DrainStatus}" Binding="{Binding DrainStatus}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_NodeWeight}" Binding="{Binding NodeWeight}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_FaultDomain}" Binding="{Binding FaultDomain}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc Key=Tab_Roles}">
+                <DataGrid ItemsSource="{Binding GroupRows}" AutoGenerateColumns="False" Margin="6">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Name}" Binding="{Binding Name}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_State}" Binding="{Binding State, Converter={StaticResource StatusValueConverter}}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_OwnerNode}" Binding="{Binding OwnerNode}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_GroupType}" Binding="{Binding GroupType}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Priority}" Binding="{Binding Priority}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc Key=Tab_Resources}">
+                <DataGrid ItemsSource="{Binding ResourceRows}" AutoGenerateColumns="False" Margin="6">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Name}" Binding="{Binding Name}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_State}" Binding="{Binding State, Converter={StaticResource StatusValueConverter}}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_OwnerGroup}" Binding="{Binding OwnerGroup}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_ResourceType}" Binding="{Binding ResourceType}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_OwnerNode}" Binding="{Binding OwnerNode}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc Key=Tab_Networks}">
+                <DataGrid ItemsSource="{Binding NetworkRows}" AutoGenerateColumns="False" Margin="6">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Name}" Binding="{Binding Name}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_State}" Binding="{Binding State, Converter={StaticResource StatusValueConverter}}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Role}" Binding="{Binding Role}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Address}" Binding="{Binding Address}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_AddressMask}" Binding="{Binding AddressMask}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Metric}" Binding="{Binding Metric}" />
+                        <DataGridCheckBoxColumn Width="Auto" Header="{loc:Loc Key=H_AutoMetric}" Binding="{Binding AutoMetric}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc Key=Tab_Quorum}">
+                <DataGrid ItemsSource="{Binding QuorumRows}" AutoGenerateColumns="False" Margin="6">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_QuorumType}" Binding="{Binding QuorumType}" />
+                        <DataGridTextColumn Width="*" Header="{loc:Loc Key=H_QuorumResource}" Binding="{Binding QuorumResource}" ElementStyle="{StaticResource LeftAlignedText}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc Key=Tab_Witness}">
+                <DataGrid ItemsSource="{Binding WitnessRows}" AutoGenerateColumns="False" Margin="6">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Section}" Binding="{Binding Section}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Name}" Binding="{Binding Name}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Type}" Binding="{Binding Type}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_State}" Binding="{Binding State, Converter={StaticResource StatusValueConverter}}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_OwnerGroup}" Binding="{Binding OwnerGroup}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_OwnerNode}" Binding="{Binding OwnerNode}" />
+                        <DataGridTextColumn Width="*" Header="{loc:Loc Key=H_Detail}" Binding="{Binding Detail}" ElementStyle="{StaticResource LeftAlignedText}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc Key=Tab_Events}">
+                <DataGrid ItemsSource="{Binding EventRows}" AutoGenerateColumns="False" Margin="6">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Time}" Binding="{Binding TimeCreated, Converter={StaticResource LocalizedDateConverter}}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Id}" Binding="{Binding Id}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Level}" Binding="{Binding Level}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Provider}" Binding="{Binding Provider}" />
+                        <DataGridTextColumn Width="*" Header="{loc:Loc Key=H_Message}" Binding="{Binding Message}" ElementStyle="{StaticResource LeftAlignedText}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc Key=Tab_Ownership}">
+                <DataGrid ItemsSource="{Binding PlacementRows}" AutoGenerateColumns="False" Margin="6">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_VMGroup}" Binding="{Binding VMGroup}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_State}" Binding="{Binding State, Converter={StaticResource StatusValueConverter}}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_OwnerNode}" Binding="{Binding OwnerNode}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Priority}" Binding="{Binding Priority}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_PreferredOwners}" Binding="{Binding PreferredOwnersDisplay}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_PossibleOwners}" Binding="{Binding PossibleOwnersDisplay}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_AntiAffinity}" Binding="{Binding AntiAffinity}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc Key=Tab_PreferredOwners}">
+                <DataGrid ItemsSource="{Binding PlacementRows}" AutoGenerateColumns="False" Margin="6">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_VMGroup}" Binding="{Binding VMGroup}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_OwnerNode}" Binding="{Binding OwnerNode}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_PreferredOwners}" Binding="{Binding PreferredOwnersDisplay}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_PossibleOwners}" Binding="{Binding PossibleOwnersDisplay}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_AutoFailback}" Binding="{Binding AutoFailback}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_FailbackWindow}" Binding="{Binding FailbackWindow}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc Key=Tab_Distribution}">
+                <DataGrid ItemsSource="{Binding DistributionRows}" AutoGenerateColumns="False" Margin="6">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_OwnerNode}" Binding="{Binding OwnerNode}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_VMGroups}" Binding="{Binding VMGroups}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_RunningVMs}" Binding="{Binding RunningVM}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_vCPU}" Binding="{Binding VCpu}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_AssignedMemory}" Binding="{Binding AssignedBytes, Converter={StaticResource DataSizeConverter}}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_DemandMemory}" Binding="{Binding DemandBytes, Converter={StaticResource DataSizeConverter}}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_MemoryDifference}" Binding="{Binding WasteBytes, Converter={StaticResource DataSizeConverter}}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_HighPriority}" Binding="{Binding HighPriority}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc Key=Tab_PlacementAdvisor}">
+                <DataGrid ItemsSource="{Binding AdviceRows}" AutoGenerateColumns="False" Margin="6">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Severity}" Binding="{Binding Severity, Converter={StaticResource StatusValueConverter}}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Node}" Binding="{Binding Node}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_RunningVMs}" Binding="{Binding RunningVM}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_vCPU}" Binding="{Binding VCpu}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Memory}" Binding="{Binding RamBytes, Converter={StaticResource DataSizeConverter}}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_FreeMemory}" Binding="{Binding FreeBytes, Converter={StaticResource DataSizeConverter}}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_DemandMemory}" Binding="{Binding DemandBytes, Converter={StaticResource DataSizeConverter}}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_DemandMemory}" Binding="{Binding DemandPct, StringFormat='{}{0} %'}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_AssignedMemory}" Binding="{Binding AssignedBytes, Converter={StaticResource DataSizeConverter}}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_AssignedMemory}" Binding="{Binding AssignedPct, StringFormat='{}{0} %'}" />
+                        <DataGridTextColumn Width="*" Header="{loc:Loc Key=H_Recommendation}">
+                            <DataGridTextColumn.Binding>
+                                <MultiBinding Converter="{StaticResource PlacementAdviceConverter}">
+                                    <Binding Path="Advice" />
+                                    <Binding Path="AdviceCount" />
+                                </MultiBinding>
+                            </DataGridTextColumn.Binding>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc Key=Tab_Failover}">
+                <DockPanel Margin="6">
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,6">
+                        <TextBlock Text="{loc:Loc Key=Cluster_FailoverSource}" VerticalAlignment="Center" />
+                        <ComboBox ItemsSource="{Binding FailoverNodeOptions}" SelectedItem="{Binding SelectedFailedNode}"
+                                  MinWidth="220" Margin="6,0,0,0" />
+                    </StackPanel>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <DataGrid Grid.Row="0" ItemsSource="{Binding FailoverRows}" AutoGenerateColumns="False" Margin="0,0,0,6">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_FailedNode}" Binding="{Binding FailedNode}" />
+                                <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_TargetNode}" Binding="{Binding TargetNode}" />
+                                <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_VMsToMove}" Binding="{Binding VMsToMove}" />
+                                <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_MoveDemand}" Binding="{Binding MoveDemandBytes, Converter={StaticResource DataSizeConverter}}" />
+                                <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_MoveAssigned}" Binding="{Binding MoveAssignedBytes, Converter={StaticResource DataSizeConverter}}" />
+                                <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_MoveVCpu}" Binding="{Binding MoveVCpu}" />
+                                <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_TargetRAM}" Binding="{Binding TargetRAMBytes, Converter={StaticResource DataSizeConverter}}" />
+                                <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_TargetFree}" Binding="{Binding TargetFreeBytes, Converter={StaticResource DataSizeConverter}}" />
+                                <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_AfterDemand}" Binding="{Binding AfterDemandBytes, Converter={StaticResource DataSizeConverter}}" />
+                                <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_AfterDemandPct}" Binding="{Binding AfterDemandPct, StringFormat='{}{0} %'}" />
+                                <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_FreeAfter}" Binding="{Binding FreeAfterBytes, Converter={StaticResource DataSizeConverter}}" />
+                                <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Status}" Binding="{Binding Status, Converter={StaticResource StatusValueConverter}}" />
+                                <DataGridTextColumn Width="*" Header="{loc:Loc Key=H_Advice}" Binding="{Binding Advice, Converter={StaticResource FailoverAdviceConverter}}" ElementStyle="{StaticResource LeftAlignedText}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <TextBlock Grid.Row="1" Text="{loc:Loc Key=H_VMsToMove}" FontWeight="SemiBold" Margin="0,0,0,4" />
+                        <DataGrid Grid.Row="2" ItemsSource="{Binding MoveVmRows}" AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_VM}" Binding="{Binding VM}" />
+                                <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_CPU}" Binding="{Binding CPU}" />
+                                <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_AssignedMemory}" Binding="{Binding AssignedGB}" />
+                                <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_DemandMemory}" Binding="{Binding DemandGB}" />
+                                <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_MemoryDifference}" Binding="{Binding WasteGB}" />
+                                <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_IPv4}" Binding="{Binding IPv4}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </DockPanel>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc Key=Tab_HealthScore}">
+                <DockPanel Margin="6">
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,8">
+                        <TextBlock Text="{loc:Loc Key=H_Score}" FontWeight="SemiBold" FontSize="14" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding HealthScore, StringFormat='{}{0} %'}" FontWeight="Bold" FontSize="18" Margin="8,0,0,0" VerticalAlignment="Center"
+                                   Foreground="{Binding HealthScore, Converter={StaticResource HealthScoreToBrushConverter}}" />
+                    </StackPanel>
+                    <DataGrid ItemsSource="{Binding HealthRows}" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Area}" Binding="{Binding Area, Converter={StaticResource StatusValueConverter}}" />
+                            <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Status}" Binding="{Binding Status, Converter={StaticResource StatusValueConverter}}" />
+                            <DataGridTextColumn Width="*" Header="{loc:Loc Key=H_Detail}" Binding="{Binding Detail}" ElementStyle="{StaticResource LeftAlignedText}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc Key=Tab_CSV}">
+                <DataGrid ItemsSource="{Binding CsvRows}" AutoGenerateColumns="False" Margin="6">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Name}" Binding="{Binding Name}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_State}" Binding="{Binding State, Converter={StaticResource StatusValueConverter}}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_OwnerNode}" Binding="{Binding OwnerNode}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_Size}" Binding="{Binding SizeBytes, Converter={StaticResource DataSizeConverter}}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_FreeSpace}" Binding="{Binding FreeBytes, Converter={StaticResource DataSizeConverter}}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_UsedSpace}" Binding="{Binding UsedBytes, Converter={StaticResource DataSizeConverter}}" />
+                        <DataGridTextColumn Width="Auto" Header="{loc:Loc Key=H_FreeSpacePct}" Binding="{Binding FreePercent, StringFormat='{}{0} %'}" />
+                        <DataGridTextColumn Width="*" Header="{loc:Loc Key=H_Path}" Binding="{Binding Path}" ElementStyle="{StaticResource LeftAlignedText}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</UserControl>
